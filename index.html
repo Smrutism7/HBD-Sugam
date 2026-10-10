@@ -34,6 +34,19 @@ input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(214,181,116,.12)}
 .qr-placeholder{margin:24px auto 8px;padding:16px;border:1px dashed var(--line);border-radius:16px;text-align:center;max-width:260px;color:var(--gold)}
 a{color:var(--gold)}
 @media(max-width:480px){body{padding:14px}.topline{font-size:.64rem}.card{border-radius:19px}}
+
+/* Celebration: matches the existing wine-and-gold birthday theme */
+#celebration{position:fixed;inset:0;z-index:1000;background:rgba(33,16,27,.96);display:none;align-items:center;justify-content:center;text-align:center;padding:24px;overflow:hidden}
+#celebration.active{display:flex}
+#celebration .celebration-content{position:relative;z-index:2;max-width:520px;animation:partyPop .65s ease both}
+#celebration h2{color:var(--cream)}
+#celebration .party-icon{font-size:3.4rem;margin-bottom:18px}
+#celebration .party-piece{position:absolute;top:-60px;pointer-events:none;animation:partyFall linear forwards}
+#celebration .party-balloon{position:absolute;bottom:-90px;pointer-events:none;animation:partyFloat linear forwards}
+@keyframes partyFall{to{transform:translateY(115vh) rotate(650deg);opacity:0}}
+@keyframes partyFloat{to{transform:translateY(-120vh) rotate(15deg);opacity:0}}
+@keyframes partyPop{from{transform:scale(.75);opacity:0}to{transform:scale(1);opacity:1}}
+@media(prefers-reduced-motion:reduce){#celebration .party-piece,#celebration .party-balloon{animation:none;display:none}#celebration .celebration-content{animation:none}}
 </style>
 </head>
 <body>
@@ -42,70 +55,78 @@ a{color:var(--gold)}
   <section class="card" id="app" aria-live="polite"></section>
   <p class="note" style="text-align:center;margin-top:16px">A little mystery, made with love. ♥</p>
 </main>
+<div id="celebration" role="dialog" aria-modal="true" aria-labelledby="party-title">
+  <div class="celebration-content">
+    <div class="party-icon" aria-hidden="true">🎉 🎈 ✨</div>
+    <p class="eyebrow">Project SUGAM · Special checkpoint</p>
+    <h2 id="party-title">You found it, detective!</h2>
+    <p class="lead" id="party-message">A little surprise is waiting for you. Enjoy this moment! ♥</p>
+    <button id="party-continue" type="button">CONTINUE THE MISSION ↗</button>
+  </div>
+</div>
 <script>
 /*
   SETUP NOTE:
-  1) Replace SONG_URL below with your private/shareable custom-song link.
+  1) The song is revealed physically in a framed gift, not on this website.
   2) Open qr-cards.html after uploading this folder to hosting.
   3) QR links use ?stage=1 through ?stage=9.
 */
-const SONG_URL = "PASTE_YOUR_CUSTOM_SONG_LINK_HERE";
 const stages = {
   1: {
-    title:"A familiar face",
-    clue:"I have a face, but no eyes of my own. I copy your expressions without making a sound. You probably see me every morning. Where am I?",
-    answers:["bathroom mirror","mirror","the mirror"],
-    destination:"Go to the bathroom mirror. Look around carefully; your next scan is waiting there.",
-    wrong:"Not quite, detective. Think about the silent copycat you meet in the morning. 😏"
-  },
-  2: {
     title:"The silent storytellers",
     clue:"I hold many worlds but never travel. My silent secrets are yours to unravel. My friends stand in rows, with stories to tell. Where do these paper storytellers gather?",
     answers:["bookshelf","book shelf","books","bookcase","the bookshelf"],
     destination:"Head to the bookshelf. Look for a small QR card tucked nearby.",
     wrong:"Close, but no case closed yet. Look for a home where stories stand side by side."
   },
-  3: {
+  2: {
     title:"The everyday companions",
     clue:"Before you step out to conquer the day, your companions patiently wait. They come in pairs and never complain. Where do they stay?",
     answers:["shoe rack","shoes","shoe shelf","the shoe rack","entryway shoe rack"],
     destination:"Go to the shoe rack. Search carefully around the shoes and nearby boxes.",
     wrong:"Try again. They're a pair-loving bunch that helps you get out the door."
   },
-  4: {
+  3: {
     title:"A chilly personality",
     clue:"I keep things fresh and have a chilly personality. I guard snacks, leftovers, and midnight decisions. What am I?",
     answers:["refrigerator","fridge","the fridge","the refrigerator"],
     destination:"Visit the refrigerator. Your next QR card is waiting nearby—not inside anything that could get wet.",
     wrong:"Brrr… you're looking for the place that keeps food cold."
   },
-  5: {
+  4: {
     title:"The daily decision",
     clue:"Some things are folded, some hang with care. Some are favorites you choose to wear. Find the place where your daily outfit decisions live.",
     answers:["wardrobe","closet","clothes closet","the wardrobe","his wardrobe"],
     destination:"Go to your wardrobe and look behind the folded clothes for the next QR card.",
     wrong:"Not the laundry basket, detective. Think of where clothes are stored and chosen."
   },
-  6: {
+  5: {
     title:"A well-earned break",
     clue:"I welcome movie nights, scrolling sessions, naps, and long conversations. I take the weight off your feet. Where am I?",
     answers:["sofa","couch","the sofa","the couch"],
     destination:"Head to the sofa. Check around the cushions and nearby side table for your next QR card.",
     wrong:"Take a seat and think about the comfiest spot in the living room."
   },
-  7: {
+  6: {
     title:"The clever corner",
     clue:"Little lights blink, buttons click, and wires sometimes mysteriously disappear. A curious mind feels right at home here. Where should you investigate?",
     answers:["electronics area","desk","computer desk","gaming area","hobby area","electronics","tech area","his desk","work desk"],
     destination:"Go to your electronics, desk, or hobby area. Look around your usual gadgets for the next QR card.",
     wrong:"Think of the place where your gadgets, tech, or hobby gear live."
   },
-  8: {
+  7: {
     title:"Where we gather",
     clue:"A place for stories, laughter, and something to eat. We gather here when it's time to dine. Where do our plates meet?",
     answers:["dining table","table","kitchen table","the dining table"],
     destination:"Go to the dining table. Look underneath or around it for your next QR card.",
     wrong:"You're hungry for the answer! Think of where we sit down for a meal."
+  },
+  8: {
+    title:"One last quiet corner",
+    clue:"The day is nearly done, and dreams are close at hand. Beside the place where we rest, a little hiding spot is waiting. Look inside the drawer nearby. Where am I?",
+    answers:["bedside drawer","nightstand","nightstand drawer","bedside table","side table","bedside cabinet","drawer"],
+    destination:"CASE CLOSED! ♥ You solved the final mystery. Your last destination is the bedside drawer. Go discover what is waiting for you there. Happy Birthday, Sugam!",
+    wrong:"Think of the little drawer beside the bed."
   }
 };
 const app = document.getElementById("app");
@@ -123,9 +144,7 @@ function home(){
 }
 function showStage(n){
  if(n===0){
-   app.innerHTML = `<p class="eyebrow">Case file opened</p><h2>First things first…</h2><p class="lead">I have a face, but no eyes of my own.</p><p>I copy your expressions without making a sound. You probably see me every morning. Where am I?</p><label for="answer">Your best guess</label><input id="answer" autocomplete="off" placeholder="Type your answer…"><button id="check">SUBMIT ANSWER</button><p class="feedback" id="feedback"></p>`;
-   document.getElementById("check").onclick = () => checkAnswer(["bathroom mirror","mirror","the mirror"],"Go to the bathroom mirror. Look around carefully; your first QR card is waiting there.","Think about the silent copycat you meet in the morning. 😏");
-   document.getElementById("answer").addEventListener("keydown",e=>{if(e.key==="Enter")document.getElementById("check").click()});
+   app.innerHTML = `<div class="ornament">✦ ✧ ✦</div><p class="eyebrow">Mission activated</p><h2>Detective, you're in.</h2><p class="lead">Your case file is now open. ♥</p><p>Your first QR card is waiting at the <strong>bathroom mirror</strong>. Find it and scan to unlock your first riddle.</p><div class="rule"></div><p class="note">Each QR scan reveals a new riddle. Solve it to discover where to go next.</p>`;
    return;
  }
  if(n>=1 && n<=8){
@@ -135,7 +154,7 @@ function showStage(n){
    document.getElementById("answer").addEventListener("keydown",e=>{if(e.key==="Enter")document.getElementById("check").click()});
    return;
  }
- finalReveal();
+ home();
 }
 function checkAnswer(answers,destination,wrong){
  const input = clean(document.getElementById("answer").value);
@@ -148,27 +167,58 @@ function checkAnswer(answers,destination,wrong){
    document.getElementById("check").after(p);
    document.getElementById("check").textContent="CASE NOTE RECEIVED ✓";
    document.getElementById("check").disabled=true;
+   if(stage===8) launchCelebration("You solved the final riddle, Sugam! ♥ The mystery ends here. Head to the bedside drawer for your last surprise. Happy Birthday!");
  } else {
    fb.textContent=wrong;
    const inputEl=document.getElementById("answer");
    inputEl.focus();
  }
 }
-function finalReveal(){
- const songAvailable = SONG_URL && SONG_URL !== "PASTE_YOUR_CUSTOM_SONG_LINK_HERE";
- app.innerHTML = `<div class="ornament">♥ ✦ ♥</div><p class="eyebrow">Case closed</p><h1>For my Sugam.</h1>
- <p class="lead">You followed the clues. You trusted your instincts. And you made it here.</p>
- <div class="rule"></div>
- <p>Some surprises make you smile. Some memories make you laugh. And some people make every ordinary day feel special.</p>
- <p>We've shared little moments, laughter, and dreams—and built a life that's ours. I wanted to give you something that wasn't just another thing to unwrap, but something made especially for you.</p>
- <p class="lead">Happy Birthday, my love.<br><strong style="color:var(--gold);font-weight:500">I'd choose you, every single time. ♥</strong></p>
- <div class="rule"></div>
- <p class="eyebrow">A little piece of my heart</p>
- <p>Put on your headphones, then scan the song card I left for you—or open the song below.</p>
- ${songAvailable ? `<a class="button" href="${SONG_URL}" target="_blank" rel="noopener">LISTEN TO YOUR SONG ♫</a>` : `<div class="qr-placeholder">Your custom song link goes here<br><span class="note">Add it in index.html before publishing.</span></div>`}
- <p class="note">P.S. You may now ask your wife for hints. The investigation is officially over. 😉</p>`;
+// These QR stages are located beside wrapped gifts; celebrate on arrival,
+// not when the previous riddle is answered.
+const giftCheckpoints = {
+  3: "Excellent detective work! There is something waiting for you here. Unwrap it before continuing. ♥",
+  5: "Another mystery solved! Take a moment to enjoy what you found. ✨",
+  7: "You made it to another special checkpoint! A little surprise is yours. 🎁",
+
+};
+function launchCelebration(message){
+  const overlay=document.getElementById("celebration");
+  document.getElementById("party-message").textContent=message;
+  overlay.querySelectorAll(".party-piece,.party-balloon").forEach(el=>el.remove());
+  overlay.classList.add("active");
+  document.getElementById("party-continue").focus();
+  if(window.matchMedia("(prefers-reduced-motion: reduce)").matches)return;
+  for(let i=0;i<85;i++){
+    const el=document.createElement("span");
+    el.className="party-piece";
+    el.textContent=["✦","●","◆","✨"][Math.floor(Math.random()*4)];
+    el.style.color=["#d6b574","#fff6eb","#f3a4b5","#e9cf95"][Math.floor(Math.random()*4)];
+    el.style.left=Math.random()*100+"%";
+    el.style.fontSize=(10+Math.random()*16)+"px";
+    el.style.animationDuration=(2.8+Math.random()*3)+"s";
+    el.style.animationDelay=Math.random()*1.5+"s";
+    overlay.appendChild(el);
+    el.addEventListener("animationend",()=>el.remove());
+  }
+  for(let i=0;i<10;i++){
+    const el=document.createElement("span");
+    el.className="party-balloon";
+    el.textContent="🎈";
+    el.style.left=Math.random()*95+"%";
+    el.style.fontSize=(27+Math.random()*24)+"px";
+    el.style.animationDuration=(5+Math.random()*4)+"s";
+    el.style.animationDelay=Math.random()*1.4+"s";
+    overlay.appendChild(el);
+    el.addEventListener("animationend",()=>el.remove());
+  }
 }
-if(stage===9){finalReveal();} else if(stage>=1 && stage<=8){showStage(stage);} else {home();}
+document.getElementById("party-continue").onclick=()=>{
+  document.getElementById("celebration").classList.remove("active");
+  document.getElementById("app").querySelector("input,button,a")?.focus();
+};
+if(stage>=1 && stage<=8){showStage(stage);} else {home();}
+if(giftCheckpoints[stage])launchCelebration(giftCheckpoints[stage]);
 </script>
 </body>
 </html>
