@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Project SUGAM | QR Card Printer</title>
+<style>
+body{margin:0;padding:24px;background:#f6f0e8;color:#351525;font-family:Arial,sans-serif}
+header{max-width:900px;margin:0 auto 24px}h1{font-family:Georgia,serif;font-weight:500;font-size:2.5rem;margin-bottom:8px}
+p{line-height:1.55}.controls{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}.controls input{flex:1;min-width:240px;padding:12px;border:1px solid #cdb9a0;border-radius:8px;font-size:1rem}
+button{padding:12px 16px;border:0;border-radius:8px;background:#351525;color:#fff6eb;font-weight:bold;cursor:pointer}
+.grid{max-width:900px;margin:auto;display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.qcard{background:#fffaf3;border:1px solid #d6b574;border-radius:12px;padding:18px;text-align:center;break-inside:avoid;min-height:240px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.qcard h2{font-family:Georgia,serif;font-size:1.1rem;font-weight:500;margin:0 0 6px}.qcard p{font-size:.82rem;margin:4px 0 10px;color:#684a58}.qr{min-height:132px;display:flex;align-items:center;justify-content:center}.qr img{width:132px;height:132px}.tiny{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:#8a6a2c}
+@media(max-width:650px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:440px){.grid{grid-template-columns:1fr}}
+@media print{body{padding:0;background:white}.controls,header .instructions{display:none!important}.grid{grid-template-columns:repeat(3,1fr);gap:8px}.qcard{border-radius:0;min-height:220px;padding:10px}.qcard h2{font-size:1rem}.qr img{width:112px;height:112px}}
+</style>
+</head>
+<body>
+<header>
+<p class="tiny">Private birthday project</p><h1>Project SUGAM — QR Cards</h1>
+<p class="instructions">After publishing the website, paste its base address below. Example: <strong>https://your-site.example</strong> (no <code>?stage=</code> at the end). The cards below will generate QR codes for the nine hiding spots. Print this page, cut out the cards, and place each one at the matching location.</p>
+<div class="controls"><input id="base" placeholder="Paste published website address here"><button id="generate">Generate QR cards</button><button onclick="window.print()">Print cards</button></div>
+<p class="instructions">QR cards are intentionally labeled with neutral titles so Sugam won't know what's waiting for him. Don't leave this printer page open for him to see.</p>
+</header>
+<div class="grid" id="grid"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+const cards=[
+ ["A little mystery","Place at the bathroom mirror",1],
+ ["A new lead","Place at the bookshelf",2],
+ ["Follow your instincts","Place at the shoe rack",3],
+ ["Stay curious","Place near the refrigerator",4],
+ ["Another clue","Place in/near the wardrobe",5],
+ ["Take a moment","Place at the sofa",6],
+ ["Investigate further","Place near the electronics / hobby area",7],
+ ["Almost somewhere","Place at the dining table",8],
+ ["For you, my love","Place in the bedside drawer — final reveal",9]
+];
+const grid=document.getElementById("grid");
+cards.forEach(([title,place,stage])=>{
+ const el=document.createElement("article");el.className="qcard";el.innerHTML=`<p class="tiny">Project SUGAM</p><h2>${title}</h2><p>${place}</p><div class="qr" id="qr${stage}"><span class="note">Generate QR codes</span></div><p class="tiny">Scan to continue</p>`;grid.appendChild(el);
+});
+document.getElementById("generate").onclick=()=>{
+ const base=document.getElementById("base").value.trim().replace(/\/+$/,"");
+ if(!base){alert("Paste your published website address first.");return}
+ if(!/^https?:\/\//i.test(base)){alert("Please include https:// at the beginning.");return}
+ cards.forEach(([title,place,stage])=>{
+   const box=document.getElementById("qr"+stage);box.innerHTML="";
+   new QRCode(box,{text:base+"/?stage="+stage,width:132,height:132,colorDark:"#351525",colorLight:"#fffaf3",correctLevel:QRCode.CorrectLevel.M});
+ });
+};
+</script>
+</body>
+</html>
