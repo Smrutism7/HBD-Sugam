@@ -41,11 +41,11 @@ const stages = {
     wrong:"Take a seat and think about the comfiest spot in the living room."
   },
   6: {
-    title:"The clever corner",
-    clue:"Little lights blink, buttons click, and wires sometimes mysteriously disappear. A curious mind feels right at home here. Where should you investigate?",
-    answers:["electronics area","desk","computer desk","gaming area","hobby area","electronics","tech area","his desk","work desk"],
-    destination:"Go to your electronics, desk, or hobby area. Look around your usual gadgets for the next QR card.",
-    wrong:"Think of the place where your gadgets, tech, or hobby gear live."
+    title:"The waiting traveler",
+    clue:"I wait patiently when journeys end, yet I'm always ready when plans begin. I have windows but I'm not a house, and a key brings me to life. Where am I?",
+    answers:["car","our car","my car","his car","vehicle","the car","automobile"],
+    destination:"Correct, detective! Your next QR code is waiting inside your car. Search carefully.",
+    wrong:"Think of something parked that takes you places, even though it stays still between trips."
   },
   7: {
     title:"Where we gather",
