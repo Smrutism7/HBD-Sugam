@@ -13,11 +13,11 @@ const stages = {
     wrong:"Close, but no case closed yet. Look for a home where stories stand side by side."
   },
   2: {
-    title:"The everyday companions",
-    clue:"Before you step out to conquer the day, your companions patiently wait. They come in pairs and never complain. Where do they stay?",
-    answers:["shoe rack","shoes","shoe shelf","the shoe rack","entryway shoe rack"],
-    destination:"Go to the shoe rack. Search carefully around the shoes and nearby boxes.",
-    wrong:"Try again. They're a pair-loving bunch that helps you get out the door."
+    title:"The quiet keeper",
+    clue:"Where plans are made and work gets done, a quiet keeper hides from everyone. Behind its doors, away from sight, a secret waits out of the light. Find the closed space in the room of work. Where am I?",
+    answers:["office closet","office room closet","closet in office","closet in the office","office cupboard","office cabinet","work room closet","study closet","office wardrobe"],
+    destination:"Head to the closet in your office room. Your next QR code is hidden inside. Search carefully.",
+    wrong:"Think of a storage space with doors, inside the room where you work."
   },
   3: {
     title:"A chilly personality",
