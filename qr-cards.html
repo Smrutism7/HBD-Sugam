@@ -190,7 +190,7 @@
       cards.forEach(([title, place, stage]) => {
         const el = document.createElement("article");
         el.className = "qcard";
-        el.innerHTML = `<p class="tiny">Project SUGAM</p><h2>${title}</h2><p class="placement">${place}</p><div class="qr" id="qr${stage}"><span class="note">Generate QR codes</span></div><p class="tiny">Scan to continue</p>`;
+        el.innerHTML = `<p class="tiny">Happy Birthday Sugam</p><h2>${title}</h2><p class="placement">${place}</p><div class="qr" id="qr${stage}"><span class="note">Generate QR codes</span></div><p class="tiny">Scan to continue</p>`;
         grid.appendChild(el);
       });
       document.getElementById("generate").onclick = () => {
